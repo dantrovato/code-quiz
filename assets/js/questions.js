@@ -1,4 +1,16 @@
 const maxSeconds = 3;
+const questions = [
+  {
+    question: "Who'd win in a fight between Javascript and Ruby?",
+    answers: ["Javascript", "Ruby", "They'd draw", "It's a stupid question"],
+    correctAnswer: "It's a stupid question",
+  },
+  {
+    question: "Who came up with the best questions for this quiz?",
+    answers: ["Dan", "Andrew", "Dane", "Just not Dan"],
+    correctAnswer: "Just not Dan",
+  },
+];
 
 // Timer starts and it stops when maxSeconds (at the top) is reached
 function startTimer() {
@@ -24,9 +36,14 @@ function showQuestion() {
   //                                                         <h2 id="question-title"></h2>
   //                                                         <div id="choices" class="choices"></div>
   //                                                       </div>
-  const questions = document.querySelector("#questions"); // type: div
+  // questionsDiv begins life with a class of hide. This must be removed
+  const questionDiv = document.querySelector("#questions"); // type: div
   const title = document.querySelector("#question-title"); // type: h2
   const choices = document.querySelector("#choices"); // type: div
+  questionDiv.classList.remove("hide");
+  questions.forEach((q) => {
+    title.textContent = "fava";
+  });
 }
 
 document.addEventListener("DOMContentLoaded", (event) => {
