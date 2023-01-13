@@ -1,5 +1,3 @@
-// Make start timer count down.
-
 const maxSeconds = 3;
 let questionIdx = 0;
 const questions = [
@@ -107,7 +105,7 @@ function showNextQuestion() {
     if (event.target.tagName !== "BUTTON") return;
     evaluateAnswer(q, event, choices);
     questionIdx += 1;
-    // showNextQuestion();
+    setTimeout(showNextQuestion, 1000);
   });
 }
 
