@@ -114,6 +114,7 @@ function loadResults() {
 
 function showNextQuestion() {
   if (gameOver) return;
+
   const questionDiv = document.querySelector("#questions"); // type: div, below is the structur of this div:
   //                                                       <div id="questions" class="hide">
   //                                                         <h2 id="question-title"></h2>
@@ -144,8 +145,10 @@ function showNextQuestion() {
   choices.addEventListener("click", (event) => {
     if (event.target.tagName !== "BUTTON") return;
     evaluateAnswer(q, event, choices);
-    disableButtons();
+    // Should fix bug where first answer is loaded on second question
+    q = questions[questionIdx];
 
+    disableButtons();
     setTimeout(showNextQuestion, 1000);
   });
 }
@@ -158,6 +161,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
     startTimer();
     hideStartButton();
     showNextQuestion();
+
     const intervalId = setInterval(() => {
       if (timer < 0) {
         clearInterval(intervalId);
