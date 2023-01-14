@@ -89,7 +89,7 @@ li:nth-child(odd) {
 
 /* styles for the displayCorrect and displayWrong in questions.js for when a user clicks on a choice */
 .correct {
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid lightgrey;
 }
 
 .wrong {

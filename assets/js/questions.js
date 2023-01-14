@@ -1,4 +1,9 @@
-const maxSeconds = 3;
+// if (q === undefined) return;
+// move timer to clobal scope
+// add third question
+
+const maxSeconds = 30;
+let timer = maxSeconds - 1;
 let questionIdx = 0;
 const questions = [
   {
@@ -7,16 +12,21 @@ const questions = [
     correctAnswer: "It's a stupid question",
   },
   {
-    question: "Who came up with the best questions for this quiz?",
-    answers: ["Dan", "Andrew", "Dane", "Not Dan"],
-    correctAnswer: "Not Dan",
+    question: "How many fingers does Bart Simpson have?",
+    answers: ["3", "10", "8", "16"],
+    correctAnswer: "8",
+  },
+  {
+    question: "Who's good at coming up with questions for this quiz?",
+    answers: ["Dan", "Andrew", "Dane", "defo not Dan"],
+    correctAnswer: "defo not Dan",
   },
 ];
 
 // Timer starts and it stops when maxSeconds (at the top) is reached
 function startTimer() {
   const timeSpan = document.querySelector("#time"); // type: span, the bit on top right the displays the count to the page
-  let timer = maxSeconds - 1;
+
   const timerId = setInterval(() => {
     if (timer < 0) {
       clearInterval(timerId);
@@ -71,10 +81,18 @@ function displayWrong(choices) {
   choices.appendChild(answerResult);
 }
 
+// Once user has clicked on an answer buttons for the same question are disabled
+function disableButtons() {
+  document
+    .querySelectorAll("button")
+    .forEach((button) => button.setAttribute("disabled", true));
+}
+
 function evaluateAnswer(q, event, choices) {
   if (q.correctAnswer === event.target.textContent) {
     displayCorrect(choices);
   } else {
+    timer -= 10;
     displayWrong(choices);
   }
 }
@@ -93,6 +111,9 @@ function showNextQuestion() {
   questionDiv.classList.remove("hide");
 
   let q = questions[questionIdx];
+  // when we get to questionIdx being > questions.length we return to avoid error being thrown
+  if (q === undefined) return;
+
   // insert question into title
   title.textContent = q.question;
   // clear previous choices if they exist
@@ -104,6 +125,7 @@ function showNextQuestion() {
   choices.addEventListener("click", (event) => {
     if (event.target.tagName !== "BUTTON") return;
     evaluateAnswer(q, event, choices);
+    disableButtons();
     questionIdx += 1;
     setTimeout(showNextQuestion, 1000);
   });
