@@ -1,6 +1,7 @@
 const maxSeconds = 20;
 let timer = maxSeconds - 1;
 let questionIdx = 0;
+let gameOver = false;
 const questions = [
   {
     question: "Who'd win in a fight between Javascript and Ruby?",
@@ -26,6 +27,7 @@ function startTimer() {
   const timerId = setInterval(() => {
     if (timer < 0) {
       clearInterval(timerId);
+      gameOver = true;
       return;
     }
     timeSpan.textContent = timer;
@@ -111,6 +113,7 @@ function loadResults() {
 }
 
 function showNextQuestion() {
+  if (gameOver) return;
   const questionDiv = document.querySelector("#questions"); // type: div, below is the structur of this div:
   //                                                       <div id="questions" class="hide">
   //                                                         <h2 id="question-title"></h2>
