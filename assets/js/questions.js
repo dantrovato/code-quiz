@@ -1,6 +1,4 @@
-// Move questionIdx += 1; out of choices.addEventListener and into showNextQuestion() as it was getting called twice.
-
-const maxSeconds = 3;
+const maxSeconds = 20;
 let timer = maxSeconds - 1;
 let questionIdx = 0;
 const questions = [
@@ -92,6 +90,10 @@ function evaluateAnswer(q, event, choices) {
     displayCorrect(choices);
   } else {
     timer -= 10;
+    // If the answer is wrong the next two lines set the timer to current timer if it's > 0 and set it to 0 if it's < 0
+    const timeSpan = document.querySelector("#time"); // type: span, the bit on top right the displays the count to the page
+    timeSpan.textContent = timer > 0 ? timer : 0;
+
     displayWrong(choices);
   }
 }
@@ -105,7 +107,7 @@ function allQuestionsAnswered(q) {
 
 // After either all questions are answered or timer has run out...
 function loadResults() {
-  console.log("line 108");
+  console.log("done");
 }
 
 function showNextQuestion() {
@@ -122,7 +124,10 @@ function showNextQuestion() {
   questionDiv.classList.remove("hide");
   let q = questions[questionIdx];
 
-  if (allQuestionsAnswered(q)) return;
+  if (allQuestionsAnswered(q)) {
+    timer = 0;
+    return;
+  }
 
   // insert question into title
   title.textContent = q.question;
@@ -150,6 +155,12 @@ document.addEventListener("DOMContentLoaded", (event) => {
     startTimer();
     hideStartButton();
     showNextQuestion();
-    loadResults();
+    const intervalId = setInterval(() => {
+      if (timer < 0) {
+        clearInterval(intervalId);
+
+        loadResults();
+      }
+    }, 100);
   });
 });
