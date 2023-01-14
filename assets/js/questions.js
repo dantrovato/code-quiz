@@ -1,8 +1,6 @@
-// if (q === undefined) return;
-// move timer to clobal scope
-// add third question
+// Move questionIdx += 1; out of choices.addEventListener and into showNextQuestion() as it was getting called twice.
 
-const maxSeconds = 30;
+const maxSeconds = 3;
 let timer = maxSeconds - 1;
 let questionIdx = 0;
 const questions = [
@@ -72,6 +70,7 @@ function displayCorrect(choices) {
   choices.appendChild(answerResult);
 }
 
+// Same as above
 function displayWrong(choices) {
   clearAnswerResultDisplay();
   const answerResult = document.createElement("p");
@@ -97,6 +96,18 @@ function evaluateAnswer(q, event, choices) {
   }
 }
 
+function allQuestionsAnswered(q) {
+  // when we get to questionIdx being > questions.length we return to avoid error being thrown
+  if (q === undefined) {
+    return true;
+  }
+}
+
+// After either all questions are answered or timer has run out...
+function loadResults() {
+  console.log("line 108");
+}
+
 function showNextQuestion() {
   const questionDiv = document.querySelector("#questions"); // type: div, below is the structur of this div:
   //                                                       <div id="questions" class="hide">
@@ -109,10 +120,9 @@ function showNextQuestion() {
 
   // questionsDiv begins life with a class of hide. This must be removed
   questionDiv.classList.remove("hide");
-
   let q = questions[questionIdx];
-  // when we get to questionIdx being > questions.length we return to avoid error being thrown
-  if (q === undefined) return;
+
+  if (allQuestionsAnswered(q)) return;
 
   // insert question into title
   title.textContent = q.question;
@@ -121,12 +131,13 @@ function showNextQuestion() {
 
   // insert answers into choices
   fillInChoices(q, choices);
+  questionIdx += 1;
 
   choices.addEventListener("click", (event) => {
     if (event.target.tagName !== "BUTTON") return;
     evaluateAnswer(q, event, choices);
     disableButtons();
-    questionIdx += 1;
+
     setTimeout(showNextQuestion, 1000);
   });
 }
@@ -139,5 +150,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
     startTimer();
     hideStartButton();
     showNextQuestion();
+    loadResults();
   });
 });
