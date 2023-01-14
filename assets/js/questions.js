@@ -129,7 +129,7 @@ function showNextQuestion() {
   let q = questions[questionIdx];
 
   if (allQuestionsAnswered(q)) {
-    timer = 0;
+    // timer = 0;
     return;
   }
 
