@@ -1,7 +1,10 @@
-const maxSeconds = 20;
+// await loadResult
+
+const maxSeconds = 600;
 let timer = maxSeconds - 1;
 let questionIdx = 0;
 let gameOver = false;
+let timerId;
 const questions = [
   {
     question: "Who'd win in a fight between Javascript and Ruby?",
@@ -15,8 +18,8 @@ const questions = [
   },
   {
     question: "Who's good at coming up with questions for this quiz?",
-    answers: ["Dan", "Andrew", "Dane", "defo not Dan"],
-    correctAnswer: "defo not Dan",
+    answers: ["Dan", "Not Dan"],
+    correctAnswer: "Not Dan",
   },
 ];
 
@@ -24,12 +27,13 @@ const questions = [
 function startTimer() {
   const timeSpan = document.querySelector("#time"); // type: span, the bit on top right the displays the count to the page
 
-  const timerId = setInterval(() => {
+  timerId = setInterval(() => {
     if (timer < 0) {
       clearInterval(timerId);
       gameOver = true;
       return;
     }
+
     timeSpan.textContent = timer;
     timer -= 1;
   }, 1000);
@@ -103,13 +107,16 @@ function evaluateAnswer(q, event, choices) {
 function allQuestionsAnswered(q) {
   // when we get to questionIdx being > questions.length we return to avoid error being thrown
   if (q === undefined) {
+    clearInterval(timerId);
     return true;
   }
 }
 
 // After either all questions are answered or timer has run out...
 function loadResults() {
-  console.log("done");
+  return new Promise((resolve) => {
+    resolve(console.log("DDDOOONNNE!"));
+  });
 }
 
 function showNextQuestion() {
@@ -157,7 +164,7 @@ function showNextQuestion() {
 document.addEventListener("DOMContentLoaded", (event) => {
   const start = document.querySelector("#start"); // type: button, value: Start Quiz, parent: div id="start-screen"
 
-  start.addEventListener("click", (event) => {
+  start.addEventListener("click", async (event) => {
     startTimer();
     hideStartButton();
     showNextQuestion();
@@ -165,9 +172,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
     const intervalId = setInterval(() => {
       if (timer < 0) {
         clearInterval(intervalId);
-
-        loadResults();
       }
     }, 100);
+
+    await loadResults();
   });
 });

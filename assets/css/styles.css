@@ -88,10 +88,16 @@ li:nth-child(odd) {
 }
 
 /* styles for the displayCorrect and displayWrong in questions.js for when a user clicks on a choice */
+.correct,
+.wrong {
+  padding: 10px;
+}
+
 .correct {
-  border-bottom: 1px solid lightgrey;
+  border-top: 1px solid lightgrey;
 }
 
 .wrong {
-  border-bottom: 1px solid red;
+  border-top: 1px solid red;
 }
+/* /////////////////////////////////////////////////////////////////////////////////////////////////////// */
