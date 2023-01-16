@@ -3,6 +3,7 @@ let timer = maxSeconds - 1;
 let questionIdx = 0;
 let currentQuestion;
 let gameOver = false;
+const form = document.querySelector("form");
 let timerId;
 const choices = document.querySelector("#choices"); // type: div
 const questions = [
@@ -118,13 +119,6 @@ function allQuestionsAnswered(currentQuestion) {
   }
 }
 
-// After either all questions are answered or timer has run out...
-function loadResults() {
-  return new Promise((resolve) => {
-    resolve(console.log("DDDOOONNNE!"));
-  });
-}
-
 function evaluateAnswer(currentQuestion, event, choices) {
   // currentQuestion = questions[questionIdx];
   if (currentQuestion.correctAnswer === event.target.textContent) {
@@ -176,9 +170,13 @@ function persistData() {
 }
 
 // When quiz is over and results load this event listener persists the score in the local storage
-document.querySelector("form").addEventListener("submit", (event) => {
+form.addEventListener("submit", (event) => {
   event.preventDefault();
   persistData();
+  const highScores = document.querySelector('a[href="highscores.html"]');
+
+  const evt = new MouseEvent("click");
+  highScores.dispatchEvent(evt);
 });
 
 choices.addEventListener("click", (event) => {
@@ -205,4 +203,16 @@ document.addEventListener("DOMContentLoaded", (event) => {
       }
     }, 100);
   });
+
+  // const highScores = document.querySelector('a[href="highscores.html"]');
+  // const fava = document.querySelector("#fava");
+
+  // // highScores.addEventListener("showHighScoreEvent", () => console.log(9));
+
+  // const evt = new MouseEvent("click");
+
+  // fava.addEventListener("click", () => {
+  //   console.log(9);
+  //   highScores.dispatchEvent(evt);
+  // });
 });
