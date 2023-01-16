@@ -1,6 +1,4 @@
-// await loadResult
-
-const maxSeconds = 75;
+const maxSeconds = 30;
 let timer = maxSeconds - 1;
 let questionIdx = 0;
 let currentQuestion;
@@ -13,23 +11,30 @@ const questions = [
     answers: ["Javascript", "Ruby", "They'd draw", "It's a stupid question"],
     correctAnswer: "It's a stupid question",
   },
-  {
-    question: "How many fingers does Bart Simpson have?",
-    answers: ["3", "10", "8", "16"],
-    correctAnswer: "8",
-  },
+  // {
+  //   question: "How many fingers does Bart Simpson have?",
+  //   answers: ["3", "10", "8", "16"],
+  //   correctAnswer: "8",
+  // },
 
-  {
-    question: "Who's good at coming up with questions for this quiz?",
-    answers: ["Dan", "Not Dan"],
-    correctAnswer: "Not Dan",
-  },
+  // {
+  //   question: "What if you cut one of them off?",
+  //   answers: ["7", "Depends who kept the cut off finger"],
+  //   correctAnswer: "Depends who kept the cut off finger",
+  // },
+
+  // {
+  //   question: "Who's good at coming up with questions for this quiz?",
+  //   answers: ["Dan", "Not Dan"],
+  //   correctAnswer: "Not Dan",
+  // },
 ];
 
 // Hides questions div and shows results
 function showScore() {
   document.querySelector("#questions").classList.add("hide");
   document.querySelector("#end-screen").classList.remove("hide");
+  timer = timer >= 0 ? timer : 0;
   document.querySelector("#time").textContent = timer;
   document.querySelector("#final-score").textContent = timer;
 }
@@ -62,6 +67,7 @@ function fillInChoices(q, choices) {
   q.answers.forEach((answer) => {
     const p = document.createElement("p");
     const button = document.createElement("button");
+    button.classList.add("answer");
     button.textContent = answer;
     p.appendChild(button);
     choices.appendChild(p);
@@ -99,7 +105,7 @@ function displayWrong(choices) {
 // Once user has clicked on an answer buttons for the same question are disabled
 function disableButtons() {
   document
-    .querySelectorAll("button")
+    .querySelectorAll(".answer")
     .forEach((button) => button.setAttribute("disabled", true));
 }
 
@@ -125,7 +131,6 @@ function evaluateAnswer(currentQuestion, event, choices) {
     displayCorrect(choices);
   } else {
     timer -= 10;
-    console.log(timer);
     // If the answer is wrong the next two lines set the timer to current timer if it's > 0 and set it to 0 if it's < 0
     const timeSpan = document.querySelector("#time"); // type: span, the bit on top right the displays the count to the page
     timeSpan.textContent = timer > 0 ? timer : 0;
@@ -134,7 +139,6 @@ function evaluateAnswer(currentQuestion, event, choices) {
   }
 
   questionIdx += 1;
-  // currentQuestion = questions[questionIdx];
 }
 
 function showNextQuestion() {
@@ -166,12 +170,22 @@ function showNextQuestion() {
   fillInChoices(currentQuestion, choices);
 }
 
+// Takes the final results and username and stores it in local storage
+function persistData() {
+  localStorage.setItem(`${document.querySelector("#initials").value}`, timer);
+}
+
+// When quiz is over and results load this event listener persists the score in the local storage
+document.querySelector("form").addEventListener("submit", (event) => {
+  event.preventDefault();
+  persistData();
+});
+
 choices.addEventListener("click", (event) => {
   currentQuestion = questions[questionIdx];
   if (event.target.tagName !== "BUTTON") return;
 
   evaluateAnswer(currentQuestion, event, choices);
-  // questionIdx += 1;
   disableButtons();
   setTimeout(showNextQuestion, 1000);
 });
