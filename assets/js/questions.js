@@ -1,7 +1,6 @@
 // await loadResult
-// Fix bug where 20 seconds are deductd instead of 10 for second wrong answer and 30 for third.
 
-const maxSeconds = 600;
+const maxSeconds = 3;
 let timer = maxSeconds - 1;
 let questionIdx = 0;
 let currentQuestion;
@@ -26,6 +25,9 @@ const questions = [
   },
 ];
 
+// Hides questions div and shows results
+function showScore() {}
+
 // Timer starts and it stops when maxSeconds (at the top) is reached
 function startTimer() {
   const timeSpan = document.querySelector("#time"); // type: span, the bit on top right the displays the count to the page
@@ -34,6 +36,7 @@ function startTimer() {
     if (timer < 0) {
       clearInterval(timerId);
       gameOver = true;
+      showScore();
       return;
     }
 
