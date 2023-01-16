@@ -1,10 +1,13 @@
 // await loadResult
+// Fix bug where 20 seconds are deductd instead of 10 for second wrong answer and 30 for third.
 
 const maxSeconds = 600;
 let timer = maxSeconds - 1;
 let questionIdx = 0;
+let currentQuestion;
 let gameOver = false;
 let timerId;
+const choices = document.querySelector("#choices"); // type: div
 const questions = [
   {
     question: "Who'd win in a fight between Javascript and Ruby?",
@@ -91,22 +94,9 @@ function disableButtons() {
     .forEach((button) => button.setAttribute("disabled", true));
 }
 
-function evaluateAnswer(q, event, choices) {
-  if (q.correctAnswer === event.target.textContent) {
-    displayCorrect(choices);
-  } else {
-    timer -= 10;
-    // If the answer is wrong the next two lines set the timer to current timer if it's > 0 and set it to 0 if it's < 0
-    const timeSpan = document.querySelector("#time"); // type: span, the bit on top right the displays the count to the page
-    timeSpan.textContent = timer > 0 ? timer : 0;
-
-    displayWrong(choices);
-  }
-}
-
-function allQuestionsAnswered(q) {
+function allQuestionsAnswered(currentQuestion) {
   // when we get to questionIdx being > questions.length we return to avoid error being thrown
-  if (q === undefined) {
+  if (currentQuestion === undefined) {
     clearInterval(timerId);
     return true;
   }
@@ -119,6 +109,24 @@ function loadResults() {
   });
 }
 
+function evaluateAnswer(currentQuestion, event, choices) {
+  // currentQuestion = questions[questionIdx];
+  if (currentQuestion.correctAnswer === event.target.textContent) {
+    displayCorrect(choices);
+  } else {
+    timer -= 10;
+    console.log(timer);
+    // If the answer is wrong the next two lines set the timer to current timer if it's > 0 and set it to 0 if it's < 0
+    const timeSpan = document.querySelector("#time"); // type: span, the bit on top right the displays the count to the page
+    timeSpan.textContent = timer > 0 ? timer : 0;
+
+    displayWrong(choices);
+  }
+
+  questionIdx += 1;
+  // currentQuestion = questions[questionIdx];
+}
+
 function showNextQuestion() {
   if (gameOver) return;
 
@@ -129,36 +137,34 @@ function showNextQuestion() {
   //                                                       </div>
 
   const title = document.querySelector("#question-title"); // type: h2
-  const choices = document.querySelector("#choices"); // type: div
 
   // questionsDiv begins life with a class of hide. This must be removed
   questionDiv.classList.remove("hide");
-  let q = questions[questionIdx];
+  currentQuestion = questions[questionIdx];
 
-  if (allQuestionsAnswered(q)) {
+  if (allQuestionsAnswered(currentQuestion)) {
     // timer = 0;
     return;
   }
 
   // insert question into title
-  title.textContent = q.question;
+  title.textContent = currentQuestion.question;
   // clear previous choices if they exist
   choices.textContent = "";
 
   // insert answers into choices
-  fillInChoices(q, choices);
-  questionIdx += 1;
-
-  choices.addEventListener("click", (event) => {
-    if (event.target.tagName !== "BUTTON") return;
-    evaluateAnswer(q, event, choices);
-    // Should fix bug where first answer is loaded on second question
-    q = questions[questionIdx];
-
-    disableButtons();
-    setTimeout(showNextQuestion, 1000);
-  });
+  fillInChoices(currentQuestion, choices);
 }
+
+choices.addEventListener("click", (event) => {
+  currentQuestion = questions[questionIdx];
+  if (event.target.tagName !== "BUTTON") return;
+
+  evaluateAnswer(currentQuestion, event, choices);
+  // questionIdx += 1;
+  disableButtons();
+  setTimeout(showNextQuestion, 1000);
+});
 
 // Once the content has loaded this function runs all the main logic
 document.addEventListener("DOMContentLoaded", (event) => {
@@ -175,6 +181,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
       }
     }, 100);
 
-    await loadResults();
+    // await loadResults();
   });
 });
