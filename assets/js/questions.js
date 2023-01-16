@@ -1,6 +1,6 @@
 // await loadResult
 
-const maxSeconds = 3;
+const maxSeconds = 75;
 let timer = maxSeconds - 1;
 let questionIdx = 0;
 let currentQuestion;
@@ -18,6 +18,7 @@ const questions = [
     answers: ["3", "10", "8", "16"],
     correctAnswer: "8",
   },
+
   {
     question: "Who's good at coming up with questions for this quiz?",
     answers: ["Dan", "Not Dan"],
@@ -26,7 +27,12 @@ const questions = [
 ];
 
 // Hides questions div and shows results
-function showScore() {}
+function showScore() {
+  document.querySelector("#questions").classList.add("hide");
+  document.querySelector("#end-screen").classList.remove("hide");
+  document.querySelector("#time").textContent = timer;
+  document.querySelector("#final-score").textContent = timer;
+}
 
 // Timer starts and it stops when maxSeconds (at the top) is reached
 function startTimer() {
@@ -101,6 +107,7 @@ function allQuestionsAnswered(currentQuestion) {
   // when we get to questionIdx being > questions.length we return to avoid error being thrown
   if (currentQuestion === undefined) {
     clearInterval(timerId);
+    showScore();
     return true;
   }
 }
@@ -173,7 +180,7 @@ choices.addEventListener("click", (event) => {
 document.addEventListener("DOMContentLoaded", (event) => {
   const start = document.querySelector("#start"); // type: button, value: Start Quiz, parent: div id="start-screen"
 
-  start.addEventListener("click", async (event) => {
+  start.addEventListener("click", (event) => {
     startTimer();
     hideStartButton();
     showNextQuestion();
@@ -183,7 +190,5 @@ document.addEventListener("DOMContentLoaded", (event) => {
         clearInterval(intervalId);
       }
     }, 100);
-
-    // await loadResults();
   });
 });
