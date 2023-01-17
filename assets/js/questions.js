@@ -12,23 +12,23 @@ const questions = [
     answers: ["Javascript", "Ruby", "They'd draw", "It's a stupid question"],
     correctAnswer: "It's a stupid question",
   },
-  // {
-  //   question: "How many fingers does Bart Simpson have?",
-  //   answers: ["3", "10", "8", "16"],
-  //   correctAnswer: "8",
-  // },
+  {
+    question: "How many fingers does Bart Simpson have?",
+    answers: ["3", "10", "8", "16"],
+    correctAnswer: "8",
+  },
 
-  // {
-  //   question: "What if you cut one of them off?",
-  //   answers: ["7", "Depends who kept the cut off finger"],
-  //   correctAnswer: "Depends who kept the cut off finger",
-  // },
+  {
+    question: "What if you cut one of them off?",
+    answers: ["7", "Depends who kept the cut off finger"],
+    correctAnswer: "Depends who kept the cut off finger",
+  },
 
-  // {
-  //   question: "Who's good at coming up with questions for this quiz?",
-  //   answers: ["Dan", "Not Dan"],
-  //   correctAnswer: "Not Dan",
-  // },
+  {
+    question: "Who's good at coming up with questions for this quiz?",
+    answers: ["Dan", "Not Dan"],
+    correctAnswer: "Not Dan",
+  },
 ];
 
 // Hides questions div and shows results
@@ -120,7 +120,6 @@ function allQuestionsAnswered(currentQuestion) {
 }
 
 function evaluateAnswer(currentQuestion, event, choices) {
-  // currentQuestion = questions[questionIdx];
   if (currentQuestion.correctAnswer === event.target.textContent) {
     displayCorrect(choices);
   } else {
@@ -148,6 +147,7 @@ function showNextQuestion() {
 
   // questionsDiv begins life with a class of hide. This must be removed
   questionDiv.classList.remove("hide");
+
   currentQuestion = questions[questionIdx];
 
   if (allQuestionsAnswered(currentQuestion)) {
@@ -166,10 +166,31 @@ function showNextQuestion() {
 
 // Takes the final results and username and stores it in local storage
 function persistData() {
-  localStorage.setItem(`${document.querySelector("#initials").value}`, timer);
+  const initials = document.querySelector("#initials").value;
+  if (Object.keys(localStorage).includes(initials)) {
+    alert("Initials already exist");
+    return;
+  }
+
+  localStorage.setItem(initials, timer);
 }
 
-// When quiz is over and results load this event listener persists the score in the local storage
+// Final step in the quiz
+function diplayHighScores(event) {
+  event.preventDefault();
+  const li = createElement("li");
+  const ol = document.querySelector("ol");
+  li.textContent = localStorage.getItem("safdz");
+  ol.appendChild("li");
+  console.log(localStorage.getItem("safdz")); ////////////////////////////////////////////////////////////////////////////
+  // retrieve the high scores from local storage and put them in an array
+  // sort array by the highest score
+  // loop over array and at each iteration create a li element and appent onto ol element
+
+  // create eventListener for clear highscores
+}
+
+// When quiz is over we persist the data in localStorage, then create a custom event and trigger the link to the high score page
 form.addEventListener("submit", (event) => {
   event.preventDefault();
   persistData();
@@ -177,6 +198,7 @@ form.addEventListener("submit", (event) => {
 
   const evt = new MouseEvent("click");
   highScores.dispatchEvent(evt);
+  diplayHighScores(event);
 });
 
 choices.addEventListener("click", (event) => {
@@ -203,16 +225,4 @@ document.addEventListener("DOMContentLoaded", (event) => {
       }
     }, 100);
   });
-
-  // const highScores = document.querySelector('a[href="highscores.html"]');
-  // const fava = document.querySelector("#fava");
-
-  // // highScores.addEventListener("showHighScoreEvent", () => console.log(9));
-
-  // const evt = new MouseEvent("click");
-
-  // fava.addEventListener("click", () => {
-  //   console.log(9);
-  //   highScores.dispatchEvent(evt);
-  // });
 });
