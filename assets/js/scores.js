@@ -1,4 +1,10 @@
-// Final step in the quiz
+// Format highscores
+// avoid duplication
+
+function formatScore(score) {
+  return score[0] + " - " + score[1];
+}
+
 function diplayHighScores() {
   // make sorted array of key value pairs
   const scores = [];
@@ -16,7 +22,7 @@ function diplayHighScores() {
 
   sortedScores.forEach((score) => {
     const li = document.createElement("li");
-    li.textContent = score;
+    li.textContent = formatScore(score);
 
     ol.appendChild(li);
   });
