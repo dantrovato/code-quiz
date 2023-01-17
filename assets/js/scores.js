@@ -10,13 +10,15 @@ function diplayHighScores() {
   }
 
   const ol = document.querySelector("#highscores");
+  const sortedScores = scores.sort((a, b) => {
+    return b[1] - a[1];
+  });
 
-  scores.forEach((score) => {
+  sortedScores.forEach((score) => {
     const li = document.createElement("li");
     li.textContent = score;
 
     ol.appendChild(li);
-    console.log(ol);
   });
 }
 
