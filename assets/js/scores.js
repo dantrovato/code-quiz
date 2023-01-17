@@ -1,21 +1,31 @@
 // Final step in the quiz
 function diplayHighScores() {
-  event.preventDefault();
-  const li = document.createElement("li");
-  const ol = document.querySelector("ol");
-  li.textContent = localStorage.getItem("safdz");
-  ol.appendChild(li);
-  console.log(localStorage.getItem("safdz")); ////////////////////////////////////////////////////////////////////////////
-  // retrieve the high scores from local storage and put them in an array
-  // sort array by the highest score
-  // loop over array and at each iteration create a li element and appent onto ol element
+  // make sorted array of key value pairs
+  const scores = [];
+  for (const name in localStorage) {
+    if (Object.hasOwnProperty.call(localStorage, name)) {
+      const score = localStorage[name];
+      scores.push([name, Number(score)]);
+    }
+  }
 
-  // create eventListener for clear highscores
+  const ol = document.querySelector("#highscores");
+
+  scores.forEach((score) => {
+    const li = document.createElement("li");
+    li.textContent = score;
+
+    ol.appendChild(li);
+    console.log(ol);
+  });
 }
 
 function addClearHighScoresListener() {
   const clearScores = document.querySelector("#clear");
-  clearScores.addEventListener("click", () => localStorage.clear());
+  clearScores.addEventListener("click", () => {
+    localStorage.clear();
+    document.querySelectorAll("li").forEach((li) => li.remove());
+  });
 }
 
 document.addEventListener("DOMContentLoaded", () => {

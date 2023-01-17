@@ -175,21 +175,6 @@ function persistData() {
   localStorage.setItem(initials, timer);
 }
 
-// Final step in the quiz
-function diplayHighScores(event) {
-  event.preventDefault();
-  const li = createElement("li");
-  const ol = document.querySelector("ol");
-  li.textContent = localStorage.getItem("safdz");
-  ol.appendChild("li");
-  console.log(localStorage.getItem("safdz")); ////////////////////////////////////////////////////////////////////////////
-  // retrieve the high scores from local storage and put them in an array
-  // sort array by the highest score
-  // loop over array and at each iteration create a li element and appent onto ol element
-
-  // create eventListener for clear highscores
-}
-
 // When quiz is over we persist the data in localStorage, then create a custom event and trigger the link to the high score page
 form.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -198,7 +183,7 @@ form.addEventListener("submit", (event) => {
 
   const evt = new MouseEvent("click");
   highScores.dispatchEvent(evt);
-  diplayHighScores(event);
+  // diplayHighScores(event);
 });
 
 choices.addEventListener("click", (event) => {
