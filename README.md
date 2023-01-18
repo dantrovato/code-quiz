@@ -8,6 +8,8 @@ has the option to enter their name and is shown a list of all the scores ranked 
 
 The application doesn't currently allow players to input the same name twice. The details are not entered into the highscores if the name already exists.
 
+The deployed application is at https://dantrovato.github.io/code-quiz/
+
 ![Start page](./images/screenshot1.png "Start")
 ![Playing page](./images/screenshot2.png "Playing")
 ![Scoreboard page](./images/screenshot3.png "Scoreboard")
