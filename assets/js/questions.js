@@ -75,32 +75,34 @@ function fillInChoices(q, choices) {
   });
 }
 
+// Removed this function as it caused a bug where it took the 1st answer out of the dom after the user had clicked on a choice.
+// The code seems to work fine without it. Below is the description of the original intention of the function
 // After the user clicks on a new choice it clears the previous correct or wrong result display
-function clearAnswerResultDisplay() {
-  if (document.querySelector(".answer")) {
-    document.querySelector(".answer").remove();
-  }
-}
+// function clearAnswerResultDisplay() {
+//   if (document.querySelector(".answer")) {
+//     document.querySelector(".answer").remove();
+//   }
+// }
 
 // The next two functions are similar and while I could have extracted the logic to a single, flexible function I felt
 // that would have needlessly complicated the code
 function displayCorrect(choices) {
-  clearAnswerResultDisplay();
   const answerResult = document.createElement("p");
   answerResult.classList.add("answer");
   answerResult.textContent = "Correct!";
   answerResult.classList.add("correct");
   choices.appendChild(answerResult);
+  // clearAnswerResultDisplay();
 }
 
 // Same as above
 function displayWrong(choices) {
-  clearAnswerResultDisplay();
   const answerResult = document.createElement("p");
   answerResult.classList.add("answer");
   answerResult.textContent = "Wrong!";
   answerResult.classList.add("wrong");
   choices.appendChild(answerResult);
+  // clearAnswerResultDisplay();
 }
 
 // Once user has clicked on an answer buttons for the same question are disabled

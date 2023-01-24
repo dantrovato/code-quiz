@@ -1,6 +1,3 @@
-// Format highscores
-// avoid duplication
-
 function formatScore(score) {
   return score[0] + " - " + score[1];
 }
